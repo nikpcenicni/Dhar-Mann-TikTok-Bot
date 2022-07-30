@@ -24,7 +24,10 @@ def cut_at_time(filename, end, type):
     
     start = "0"
     
-    end = int(end[0:2])*60 + int(end[3:6])
+    if (type == 1):
+        end = int(end[0:2])*60 + int(end[3:6])
+    elif (type == 2):
+        end = end
     
         
     probe_result=ffmpeg.probe(filepath)

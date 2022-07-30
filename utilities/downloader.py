@@ -26,10 +26,7 @@ def download(url: str, type: int):
         name = re.sub('[^A-Za-z0-9]+', '', name)
         name = name.replace("| Dhar Mann ", "")
         name = name+".mp4"
-        end = yt.length/60
-        end = end*60
-        print(end)
-        
+
         stream.download(
             output_path=outpath,
             filename=name
