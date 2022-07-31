@@ -25,7 +25,7 @@ def download(url: str, type: str):
         name = yt.title
         stream = yt.streams.get_by_itag(22)
         name = re.sub('[^A-Za-z0-9]+', '', name)
-        name = name.replace("| Dhar Mann ", "")
+        name = name.replace("| Dhar Mann", "")
         name = name+".mp4"
 
         stream.download(
@@ -33,8 +33,7 @@ def download(url: str, type: str):
             filename=name
         )
         if type == "story":
-            slicer.removeOutro(name, getEndTimeStamp(url), type)
-            name = os.path.join(os.path.join(os.path.join(os.getcwd(), 'preprocessed'), 'story'),name)
+            name = slicer.removeOutro(name, getEndTimeStamp(url), type)
             slicer.splitVideoToChunks(name, type)
         elif type == "background":
             name = os.path.join(os.path.join(os.path.join(os.getcwd(), 'preprocessed'), 'background'),name)
@@ -48,7 +47,9 @@ def download(url: str, type: str):
     
 def getName(url: str):
     yt = YouTube(url)
-    return yt.title
+    yt = yt.title
+    yt = yt.replace(", What Happens Is Shocking ", "")
+    return yt
 
 def getEndTimeStamp(url: str):
     yt = YouTube(url)

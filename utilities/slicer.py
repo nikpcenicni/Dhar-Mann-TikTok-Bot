@@ -4,10 +4,12 @@ import ffmpeg
 import pathlib
 from moviepy.editor import VideoFileClip
 import time
+from utilities import downloader, slicer, makevideo, utilties
 
 
 def removeOutro(filename, end, type):
-    cut_at_time(filename, 0, end, type)
+    
+    return cut_at_time(filename, 0, end, type)
 
 def cut_at_time(filename, start ,end, type):
     
@@ -29,24 +31,25 @@ def cut_at_time(filename, start ,end, type):
     elif (type == "background" or type == "split-bg"):
         output = os.path.join(output, 'background')
     
+    if (type == "story"):
+        end = int(end[0:2])*60 + int(end[3:6])
+        output = os.path.join(output, (filename[:-4]+"_"+str(start)+"_"+str(end)+".mp4"))
+    else:
+        end = end
     
 
     #output = os.path.join(output, filename)
     
     
     if type == "split":
-        output = os.path.join(output, (filename[:-4]+"_"+str(start)+"_"+str(end)+".mp4"))
+        output = os.path.join(output, ("part " + str(utilties.countFiles(output)) +".mp4"))
         
     if type == "split-bg":
         offset = countFiles(output)
         output = os.path.join(output, "background " + str(offset) + ".mp4")
     
     
-    if (type == "story"):
-        end = int(end[0:2])*60 + int(end[3:6])
-    else:
-        end = end
-    
+
         
     probe_result=ffmpeg.probe(filepath)
     duration = probe_result.get("format",{}).get("duration",None)
@@ -68,12 +71,13 @@ def cut_at_time(filename, start ,end, type):
     if os.path.exists(output):
         os.remove(output)
     
-    output = ffmpeg.output(video_and_audio, output, format="mp4")
-    output.run()
+    video = ffmpeg.output(video_and_audio, output, format="mp4")
+    video.run()
     if type != "split" and type != "split-bg":
         os.remove(filepath)
+       
         
-    return
+    return output
     
     
 
@@ -108,6 +112,7 @@ def splitVideoToChunks(input, type):
         else:
             cut_at_time(input, start, end, "split")
     
+    os.remove(input)
     return
     
 def countFiles(dir):

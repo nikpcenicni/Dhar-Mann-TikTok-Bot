@@ -1,8 +1,7 @@
-from operator import concat
-from turtle import back
 from utilities import downloader
 from utilities import slicer
 from utilities import utilties, makevideo
+from gui import gui
 import pathlib
 import os
 
@@ -20,7 +19,7 @@ print(
 """
 )
 
-print(pathlib.Path(__file__).parent.resolve())
+#print(pathlib.Path(__file__).parent.resolve())
 
 
 
@@ -46,7 +45,7 @@ back = os.path.join(back, "background 0.mp4")
 story = os.path.join(os.path.join(os.getcwd(), 'processed'), 'story')
 story = os.path.join(story, "SisterAshamedOfHerDisabledBrotherSheInstantlyRegretsItDharMann_0_180.mp4")
 
-#type = "story"
+type = "story"
 
 #slicer.layerVideos(story, back)
 
@@ -54,12 +53,15 @@ story = os.path.join(story, "SisterAshamedOfHerDisabledBrotherSheInstantlyRegret
 
 #makevideo.layerVideos(story, back)
 
-url = 'https://www.youtube.com/watch?v=S2SmA524lwM'
+url = 'https://www.youtube.com/watch?v=tdulthFSkjQ'
 
-utilties.addBackground(url)
+#utilties.addBackground(url)
 
+#gui.gui()
 #url = "https://www.youtube.com/watch?v=bpfQ8-UYt3g"
-#utilties.makeStoryVideo(url)
+utilties.makeStoryVideo(url)
+
+# makevideo.layerVideos(story, back)
 
 
 # title = downloader.getName(url)
