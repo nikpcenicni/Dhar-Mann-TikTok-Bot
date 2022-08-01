@@ -1,9 +1,11 @@
+from audioop import add
 from cgitb import text
 from logging import PlaceHolder
+from re import S
 import tkinter as tk
 from tkinter import ttk
 import os
-from turtle import title
+from turtle import st, title
 
 from utilities import slicer, downloader, makevideo, utilties
 
@@ -19,30 +21,13 @@ from utilities import slicer, downloader, makevideo, utilties
 #     return
 
 def addBackground(bginput):
-    url = bginput
+    url = bginput.get()
     utilties.addBackground(url)
     
 def makeVideo(url):
+    url = url.get()
     utilties.makeStoryVideo(url)
-    
-def init_placeholder(widget, placeholder_text):
-    widget.placeholder = placeholder_text
-    if widget.get() == "":
-        widget.insert("end", placeholder_text)
 
-    # set up a binding to remove placeholder text
-    widget.bind("<FocusIn>", remove_placeholder)
-    widget.bind("<FocusOut>", add_placeholder)
-    
-def remove_placeholder(event):
-    placeholder_text = getattr(event.widget, "placeholder", "")
-    if placeholder_text and event.widget.get() == placeholder_text:
-        event.widget.delete(0, "end")
-        
-def add_placeholder(event):
-    placeholder_text = getattr(event.widget, "placeholder", "")
-    if placeholder_text and event.widget.get() == "":
-        event.widget.insert(0, placeholder_text)
 
 def gui():
     root = tk.Tk()
@@ -70,10 +55,30 @@ def gui():
     
     url = tk.StringVar()
     bgInput = ttk.Entry(backgrounds, textvariable=url)
-    init_placeholder(bgInput, "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
     bgInput.pack()
     addBgBut = ttk.Button(backgrounds,text="Add background", command=lambda: addBackground(url))
     addBgBut.pack()
+    
+    storysFrame = ttk.Frame(root)
+    storysFrame.pack()
+    
+    storys = ttk.Frame(storysFrame, width=250, height=250)
+    storys.pack()
+    
+    storysLabel = ttk.Label(storys, text="Storys")
+    storysLabel.pack()
+    
+    storyURL = tk.StringVar()
+    storyInput = ttk.Entry(storys, textvariable=storyURL)
+    storyInput.pack()
+    
+    addStoryBut = ttk.Button(storys,text="Add story", command=lambda: makeVideo(storyURL))
+    addStoryBut.pack()
+    
+    
+    
+    
+    
     
     root.mainloop()
     

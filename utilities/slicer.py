@@ -59,14 +59,17 @@ def cut_at_time(filename, start ,end, type):
     
     pts = "PTS-STARTPTS"
     if (type == "split-bg"):
-        video = input_stream.trim(start = start, end = end).setpts(pts).filter('crop', '1/3*in_w', '2/3*in_h')
+        video = input_stream.trim(start = start, end = end).setpts(pts).filter('crop', w='1/3*in_w', h='5/7*in_h')
     else:
          video = input_stream.trim(start = start, end = end).setpts(pts)
     audio = (input_stream
              .filter("atrim", start = start, end = end)
              .filter("asetpts", pts))
     
-    video_and_audio = ffmpeg.concat(video, audio, v=1, a=1)
+    if (type == "story" or type == "split"):
+        video_and_audio = ffmpeg.concat(video, audio, v=1, a=1)
+    else: 
+        video_and_audio = ffmpeg.concat(video, v=1).setpts(pts)
     
     if os.path.exists(output):
         os.remove(output)

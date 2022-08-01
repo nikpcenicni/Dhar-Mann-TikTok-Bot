@@ -23,15 +23,24 @@ def download(url: str, type: str):
     try :
         yt = YouTube(url)
         name = yt.title
-        stream = yt.streams.get_by_itag(22)
         name = re.sub('[^A-Za-z0-9]+', '', name)
         name = name.replace("| Dhar Mann", "")
         name = name+".mp4"
-
-        stream.download(
+        if (type == "story"):
+            stream = yt.streams.get_by_itag(22)
+            stream.download(
             output_path=outpath,
             filename=name
         )
+        elif(type == "background"):
+            stream = yt.streams.get_by_itag(137)
+            stream.download(
+                output_path=outpath,
+                filename=name
+            )
+
+
+
         if type == "story":
             name = slicer.removeOutro(name, getEndTimeStamp(url), type)
             slicer.splitVideoToChunks(name, type)
@@ -48,7 +57,12 @@ def download(url: str, type: str):
 def getName(url: str):
     yt = YouTube(url)
     yt = yt.title
-    yt = yt.replace(", What Happens Is Shocking ", "")
+    yt = yt.replace(", What Happens Next Is Shocking", "")
+    yt = yt.replace(", What Happens Will Shock You", "")
+    yt = yt.replace(", What Happens Is Shocking", "")
+    yt = yt.replace(", They Live To Regret It", "")
+    yt = yt.replace(", She Lives To Regret It", "")
+    yt = yt.replace(", He Lives To Regret It", "")
     return yt
 
 def getEndTimeStamp(url: str):

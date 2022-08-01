@@ -1,3 +1,4 @@
+from turtle import width
 from moviepy.editor import *
 from moviepy.editor import VideoFileClip, clips_array, vfx
 from moviepy.audio.fx.all import volumex
@@ -16,5 +17,7 @@ def layerVideos(story_file, background_file):
     
     #final = CompositeVideoClip([story.rotate(90).set_position((0,480))],[back.rotate(90).set_position((0,0))])
     final.write_videofile(filename)
+    
+    os.remove(story_file)
 
     

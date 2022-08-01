@@ -57,9 +57,9 @@ url = 'https://www.youtube.com/watch?v=tdulthFSkjQ'
 
 #utilties.addBackground(url)
 
-#gui.gui()
+gui.gui()
 #url = "https://www.youtube.com/watch?v=bpfQ8-UYt3g"
-utilties.makeStoryVideo(url)
+#utilties.makeStoryVideo(url)
 
 # makevideo.layerVideos(story, back)
 

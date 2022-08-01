@@ -1,2 +1,5 @@
-preprocessed/
-processed/
+preprocessed/background/*
+preprocessed/story/*
+processed/background/*
+processed/story/*
+Output/*

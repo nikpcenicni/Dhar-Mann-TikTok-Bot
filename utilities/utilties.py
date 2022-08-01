@@ -12,17 +12,23 @@ def addBackground(url):
     return
 
 def makeStoryVideo(url):
-    # temp = downloader.download(url, "story")
+    bgOffset = countFiles(os.path.join(os.path.join(os.getcwd(), 'processed'), 'background'))
+    # print(bgOffset)
+    if (bgOffset <= 0):
+        print("No background videos found. Please download background videos first.")
+        return
+    
+    downloader.download(url, "story")
     
     num_parts = countFiles(os.path.join(os.path.join(os.getcwd(), 'processed'), 'story'))
     
-    bgOffset = countFiles(os.path.join(os.path.join(os.getcwd(), 'processed'), 'background'))
+
     # print(bgOffset)
     
 
     
     for i in range(num_parts):
-        filename = "part " + str(i) + ".mp4"
+        filename = "part " + str(i+1) + ".mp4"
         background = "background " + (str(random.randint(0, bgOffset-1))) + ".mp4"
         makevideo.layerVideos(os.path.join(os.path.join(os.path.join(os.getcwd(), 'processed'), 'story'), filename),
                               os.path.join(os.path.join(os.path.join(os.getcwd(), 'processed'), 'background'), background))
