@@ -23,13 +23,27 @@ from utilities import slicer, downloader, makevideo, utilties
 def addBackground(bginput):
     url = bginput.get()
     utilties.addBackground(url)
+    root.update_idletasks()
+    updateProgressBar(0, "Background Added To Library")
     
-def makeVideo(url):
-    url = url.get()
-    utilties.makeStoryVideo(url)
-
+def addStory(input):
+    url = input.get()
+    utilties.addStory(url)
+    root.update_idletasks()
+    updateProgressBar(0, "Story Added To Library")
+    
+def makeVideo():
+    utilties.makeStoryVideo()
+    root.update_idletasks()
+    updateProgressBar(0, "Videos Created")
+    
+def updateProgressBar(progress,status):
+    progressBar.config(value=progress)
+    progressLabel.config(text=status)
+    root.update()
 
 def gui():
+    global root
     root = tk.Tk()
     root.geometry("750x500")
     root.title("Dhar Mann TikTok Bot")
@@ -72,8 +86,38 @@ def gui():
     storyInput = ttk.Entry(storys, textvariable=storyURL)
     storyInput.pack()
     
-    addStoryBut = ttk.Button(storys,text="Add story", command=lambda: makeVideo(storyURL))
+    addStoryBut = ttk.Button(storys,text="Add story", command=lambda: addStory(storyURL))
     addStoryBut.pack()
+    
+    storysFrame = ttk.Frame(root)
+    storysFrame.pack()
+    
+    storys = ttk.Frame(storysFrame, width=250, height=250)
+    storys.pack()
+    
+    storysLabel = ttk.Label(storys, text="Storys")
+    storysLabel.pack()
+    
+    addStoryBut = ttk.Button(storys,text="Make Videos", command=lambda: makeVideo())
+    addStoryBut.pack()
+    
+    
+    progressFrame = ttk.Frame(root)
+    progressFrame.pack()
+    
+    progress = ttk.Frame(progressFrame, width=250, height=250)
+    progress.pack()
+    
+    global progressBar 
+    progressBar = ttk.Progressbar(progress, orient="horizontal", length=100, mode="determinate")
+    progressBar.pack()
+    
+    global progressLabel
+    progressLabel = ttk.Label(progress, text="Nothing is happening")
+    progressLabel.pack()
+    
+    
+    
     
     
     

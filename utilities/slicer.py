@@ -4,7 +4,10 @@ import ffmpeg
 import pathlib
 from moviepy.editor import VideoFileClip
 import time
+
+from numpy import rint
 from utilities import downloader, slicer, makevideo, utilties
+from gui import gui
 
 
 def removeOutro(filename, end, type):
@@ -104,18 +107,34 @@ def splitVideoToChunks(input, type):
     print(numChunks)
     time.sleep(10)
     
+    gui.updateProgressBar(0, "Starting Splitting")
+    
+    offset = ((1/numChunks)/2)*100
+    
     for i in range(numChunks):
         start = i*180
         end = (i+1)*180
         if (i == numChunks-1 and type == "story"):
             end = clip.duration
         print(start, end)
+        
         if type == "background":
+            percent = utilties.calculateProgress(numChunks, i)*100+offset
+            gui.updateProgressBar(percent, "Splitting Background")
             cut_at_time(input, start, end, "split-bg")
+            percent = utilties.calculateProgress(numChunks, i+1)*100
+            gui.updateProgressBar(percent, "Splitting Background")
+            
         else:
+            percent = utilties.calculateProgress(numChunks, i)*100+offset
+            gui.updateProgressBar(percent, "Splitting Story")
             cut_at_time(input, start, end, "split")
+            percent = utilties.calculateProgress(numChunks, i+1)*100
+            gui.updateProgressBar(percent, "Splitting Background")
+            
     
     os.remove(input)
+    gui.updateProgressBar(100, "Splitting Complete")
     return
     
 def countFiles(dir):
